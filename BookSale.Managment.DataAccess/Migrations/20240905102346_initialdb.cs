@@ -12,7 +12,7 @@ namespace BookSale.Managment.DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "CartCatalogue",
+                name: "Catalogue",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -23,7 +23,7 @@ namespace BookSale.Managment.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CartCatalogue", x => x.Id);
+                    table.PrimaryKey("PK_Catalogue", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -282,9 +282,9 @@ namespace BookSale.Managment.DataAccess.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BookCatalogue_CartCatalogue_CalalogueId",
+                        name: "FK_BookCatalogue_Catalogue_CalalogueId",
                         column: x => x.CalalogueId,
-                        principalTable: "CartCatalogue",
+                        principalTable: "Catalogue",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -421,7 +421,7 @@ namespace BookSale.Managment.DataAccess.Migrations
                 name: "UserToken");
 
             migrationBuilder.DropTable(
-                name: "CartCatalogue");
+                name: "Catalogue");
 
             migrationBuilder.DropTable(
                 name: "Book");

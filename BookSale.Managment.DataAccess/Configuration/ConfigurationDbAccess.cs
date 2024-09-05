@@ -17,13 +17,14 @@ namespace BookSale.Managment.DataAccess.Configuration
     {
         public static void RegisterDb(this IServiceCollection services, IConfiguration configuration)
         {
-            // Add services to the container.
-            string connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            var connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-            services.AddDbContext<BookStoreDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<BookStoreDbContext>(options =>
+                options.UseSqlServer(connectionString));
+
             services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
-                    .AddEntityFrameworkStores<BookStoreDbContext>()
-                    .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<BookStoreDbContext>()
+                .AddDefaultTokenProviders();
         }
     }
 }

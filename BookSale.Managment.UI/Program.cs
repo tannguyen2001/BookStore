@@ -15,11 +15,11 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddControllersWithViews();
 
-
-
 var app = builder.Build();
 
 app.AutoMigration();
+
+app.SeedData(builder.Configuration);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

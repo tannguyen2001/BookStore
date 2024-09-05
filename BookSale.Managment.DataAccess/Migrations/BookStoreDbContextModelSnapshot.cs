@@ -262,7 +262,7 @@ namespace BookSale.Managment.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CartCatalogue");
+                    b.ToTable("Catalogue");
                 });
 
             modelBuilder.Entity("BookSale.Managment.Domain.Entities.Genre", b =>

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookSale.Managment.DataAccess.Migrations
 {
     [DbContext(typeof(BookStoreDbContext))]
-    [Migration("20240905084930_initialdb")]
+    [Migration("20240905102346_initialdb")]
     partial class initialdb
     {
         /// <inheritdoc />
@@ -265,7 +265,7 @@ namespace BookSale.Managment.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CartCatalogue");
+                    b.ToTable("Catalogue");
                 });
 
             modelBuilder.Entity("BookSale.Managment.Domain.Entities.Genre", b =>

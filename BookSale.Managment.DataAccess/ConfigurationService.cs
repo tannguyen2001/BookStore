@@ -16,7 +16,7 @@ namespace BookSale.Managment.DataAccess
 {
     public static class ConfigurationService
     {
-        public static async void AutoMigration(this WebApplication webApplication)
+        public static async Task AutoMigration(this WebApplication webApplication)
         {
             using (IServiceScope scope = webApplication.Services.CreateScope())
             {
@@ -32,19 +32,41 @@ namespace BookSale.Managment.DataAccess
             using (IServiceScope scope = webApplication.Services.CreateScope())
             {
                 UserManager<ApplicationUser> userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                RoleManager<IdentityRole> roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                
+                
+                string roleDefault = configuration.GetSection("DefaultRole")?.Get<string>() ?? "SuperAdmin";
 
-                DefaultUser userDefault = configuration.GetSection("DefaultUser")?.Get<DefaultUser>();
-
-                IdentityResult identityUser = await userManager.CreateAsync(new ApplicationUser
+                //check role
+                bool isExitsRole = await roleManager.RoleExistsAsync(roleDefault);
+                if (!isExitsRole)
                 {
-                    UserName = userDefault.UserName,
-                    IsActive = true,
-                    AccessFailedCount = 0,
-                }, userDefault.Password);
+                    await roleManager.CreateAsync(new IdentityRole(roleDefault));
+                }
 
-                if (identityUser.Succeeded)
+                DefaultUser userDefault = configuration.GetSection("DefaultUser")?.Get<DefaultUser>() ?? new DefaultUser();
+                ApplicationUser userCheck = await userManager.FindByNameAsync(userDefault.UserName);
+                
+                if (userCheck == null)
                 {
+                    ApplicationUser user = new ApplicationUser
+                    {
+                        UserName = userDefault.UserName,
+                        Fullname = "Nguyen Van Tan",
+                        Email = userDefault.Email,
+                        IsActive = true,
+                        AccessFailedCount = 0,
+                        NormalizedEmail = userDefault.Email.ToUpper(),
+                    };
+                
+                
+                    IdentityResult identityUser = await userManager.CreateAsync(user, userDefault.Password);
 
+                    if (identityUser.Succeeded)
+                    {
+                        //add role
+                        await userManager.AddToRoleAsync(user, roleDefault);
+                    }
                 }
 
             }

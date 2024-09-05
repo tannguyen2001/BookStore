@@ -20,9 +20,9 @@ if (builder.Environment.IsDevelopment())
 
 var app = builder.Build();
 
-app.AutoMigration();
+//await app.AutoMigration();
 
-app.SeedData(builder.Configuration);
+await app.SeedData(builder.Configuration);
 
 // Cấu hình pipeline HTTP request
 if (app.Environment.IsDevelopment())

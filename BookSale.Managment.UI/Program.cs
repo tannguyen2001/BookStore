@@ -1,4 +1,5 @@
 
+using BookSale.Managment.DataAccess.Configuration;
 using BookSale.Managment.DataAccess.DataAccess;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -7,14 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 var builderRazor = builder.Services.AddRazorPages();
 
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<BookStoreDbContext>(options =>
-    options.UseSqlServer(connectionString));
+
+builder.Services.RegisterDb(builder.Configuration);
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<BookStoreDbContext>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -50,7 +48,7 @@ app.UseAuthorization();
 
 app.MapAreaControllerRoute(
     name: "AdminRouting",
-    areaName:"Admin", 
+    areaName: "Admin",
     pattern: "Admin/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(

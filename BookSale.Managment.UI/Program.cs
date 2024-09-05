@@ -7,13 +7,16 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var builderRazor = builder.Services.AddRazorPages();
-
+// Cấu hình các dịch vụ
+builder.Services.AddRazorPages();
 builder.Services.RegisterDb(builder.Configuration);
-
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
 builder.Services.AddControllersWithViews();
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+}
 
 var app = builder.Build();
 
@@ -21,16 +24,14 @@ app.AutoMigration();
 
 app.SeedData(builder.Configuration);
 
-// Configure the HTTP request pipeline.
+// Cấu hình pipeline HTTP request
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
-    builderRazor.AddRazorRuntimeCompilation();
 }
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -47,7 +48,6 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapAreaControllerRoute(

@@ -1,4 +1,5 @@
 
+using BookSale.Managment.DataAccess;
 using BookSale.Managment.DataAccess.Configuration;
 using BookSale.Managment.DataAccess.DataAccess;
 using Microsoft.AspNetCore.Identity;
@@ -8,14 +9,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 var builderRazor = builder.Services.AddRazorPages();
 
-
 builder.Services.RegisterDb(builder.Configuration);
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddControllersWithViews();
 
+
+
 var app = builder.Build();
+
+app.AutoMigration();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -22,7 +22,8 @@ namespace BookSale.Managment.DataAccess.Configuration
 
             services.AddDbContext<BookStoreDbContext>(options => options.UseSqlServer(connectionString));
             services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
-                    .AddEntityFrameworkStores<BookStoreDbContext>();
+                    .AddEntityFrameworkStores<BookStoreDbContext>()
+                    .AddDefaultTokenProviders();
         }
     }
 }

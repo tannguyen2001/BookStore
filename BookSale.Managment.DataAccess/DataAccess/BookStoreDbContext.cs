@@ -14,7 +14,6 @@ namespace BookSale.Managment.DataAccess.DataAccess
     {
         public BookStoreDbContext(DbContextOptions options) : base(options) { }
 
-
         public DbSet<Book> Book { get; set; }
         public DbSet<BookCatalogue> BookCatalogue { get; set; }
         public DbSet<Cart> Cart { get; set; }

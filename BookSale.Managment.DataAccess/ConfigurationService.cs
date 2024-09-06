@@ -29,46 +29,54 @@ namespace BookSale.Managment.DataAccess
 
         public static async Task SeedData(this WebApplication webApplication, IConfiguration configuration)
         {
-            using (IServiceScope scope = webApplication.Services.CreateScope())
+            try
             {
-                UserManager<ApplicationUser> userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-                RoleManager<IdentityRole> roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-                
-                
-                string roleDefault = configuration.GetSection("DefaultRole")?.Get<string>() ?? "SuperAdmin";
-
-                //check role
-                bool isExitsRole = await roleManager.RoleExistsAsync(roleDefault);
-                if (!isExitsRole)
+                using (IServiceScope scope = webApplication.Services.CreateScope())
                 {
-                    await roleManager.CreateAsync(new IdentityRole(roleDefault));
-                }
+                    UserManager<ApplicationUser> userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                    RoleManager<IdentityRole> roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                
+                
+                    string roleDefault = configuration.GetSection("DefaultRole")?.Get<string>() ?? "SuperAdmin";
 
-                DefaultUser userDefault = configuration.GetSection("DefaultUser")?.Get<DefaultUser>() ?? new DefaultUser();
-                ApplicationUser userCheck = await userManager.FindByNameAsync(userDefault.UserName);
-                
-                if (userCheck == null)
-                {
-                    ApplicationUser user = new ApplicationUser
+                    //check role
+                    bool isExitsRole = await roleManager.RoleExistsAsync(roleDefault);
+                    if (!isExitsRole)
                     {
-                        UserName = userDefault.UserName,
-                        Fullname = "Nguyen Van Tan",
-                        Email = userDefault.Email,
-                        IsActive = true,
-                        AccessFailedCount = 0,
-                        NormalizedEmail = userDefault.Email.ToUpper(),
-                    };
-                
-                
-                    IdentityResult identityUser = await userManager.CreateAsync(user, userDefault.Password);
-
-                    if (identityUser.Succeeded)
-                    {
-                        //add role
-                        await userManager.AddToRoleAsync(user, roleDefault);
+                        await roleManager.CreateAsync(new IdentityRole(roleDefault));
                     }
-                }
 
+                    DefaultUser userDefault = configuration.GetSection("DefaultUser")?.Get<DefaultUser>() ?? new DefaultUser();
+                    ApplicationUser userCheck = await userManager.FindByNameAsync(userDefault.UserName);
+                
+                    if (userCheck == null)
+                    {
+                        ApplicationUser user = new ApplicationUser
+                        {
+                            UserName = userDefault.UserName,
+                            Fullname = "Nguyen Van Tan",
+                            Email = userDefault.Email,
+                            Address = "Sóc Sơn",
+                            IsActive = true,
+                            AccessFailedCount = 0,
+                            NormalizedEmail = userDefault.Email.ToUpper(),
+                        };
+                
+                
+                        IdentityResult identityUser = await userManager.CreateAsync(user, userDefault.Password);
+
+                        if (identityUser.Succeeded)
+                        {
+                            //add role
+                            await userManager.AddToRoleAsync(user, roleDefault);
+                        }
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             }
         }
     }

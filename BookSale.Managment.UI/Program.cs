@@ -20,7 +20,7 @@ if (builder.Environment.IsDevelopment())
 
 var app = builder.Build();
 
-//await app.AutoMigration();
+await app.AutoMigration();
 
 await app.SeedData(builder.Configuration);
 

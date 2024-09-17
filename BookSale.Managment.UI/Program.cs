@@ -2,6 +2,7 @@
 using BookSale.Managment.DataAccess;
 using BookSale.Managment.DataAccess.Configuration;
 using BookSale.Managment.DataAccess.DataAccess;
+using BookSale.Managment.Infrastructure.ConfigurationService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

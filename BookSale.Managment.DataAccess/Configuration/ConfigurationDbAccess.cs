@@ -18,14 +18,14 @@ namespace BookSale.Managment.DataAccess.Configuration
     {
         public static void RegisterDb(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("DefaultConnectionSqlServer") 
+            var connectionString = configuration.GetConnectionString("DefaultConnectionMySql") 
                                    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-            //services.AddDbContext<BookStoreDbContext>(options =>
-            //    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
-
             services.AddDbContext<BookStoreDbContext>(options =>
-                options.UseSqlServer(connectionString));
+                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
+            //services.AddDbContext<BookStoreDbContext>(options =>
+            //    options.UseSqlServer(connectionString));
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<BookStoreDbContext>()

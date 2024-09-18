@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace BookSale.Managment.DataAccess.Repository
 {
-    public class GenreRepository : BaseRepository<Genre>, IGenreRepository
+    public class BookRepository : BaseRepository<Book>, IBookRepository
     {
-        public GenreRepository(BookStoreDbContext bookStoreDbContext) : base(bookStoreDbContext)
+        public BookRepository(BookStoreDbContext bookStoreDbContext) : base(bookStoreDbContext)
         {
 
         }
 
-        public async Task<IEnumerable<Genre>> GetAllGenres()
+        public async Task<IEnumerable<Book>> GetAllBook()
         {
-            return await base.GetAllAsync(x => x.IsActive);
+            return await base.GetAllAsync();
         }
     }
 }

@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BookSale.Managment.DataAccess\BookSale.Managment.DataAccess.csproj" />
     <ProjectReference Include="..\BookSale.Managment.Domain\BookSale.Managment.Domain.csproj" />
   </ItemGroup>
 

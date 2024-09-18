@@ -1,4 +1,8 @@
-﻿using BookSale.Managment.DataAccess.DataAccess;
+﻿using BookSale.Managment.Application.IService;
+using BookSale.Managment.Application.Services;
+using BookSale.Managment.DataAccess.DataAccess;
+using BookSale.Managment.DataAccess.IRepository;
+using BookSale.Managment.DataAccess.Repository;
 using BookSale.Managment.Domain.Entities;
 using BookSale.Managment.Domain.Settings;
 using Microsoft.AspNetCore.Builder;
@@ -36,7 +40,10 @@ namespace BookSale.Managment.Infrastructure.ConfigurationService
 
         public static void AddDependencyInjection(this IServiceCollection services)
         {
-            services.AddTransient
+            services.AddTransient<PasswordHasher<ApplicationUser>>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IBookService, BookService>();
+
         }
 
     }

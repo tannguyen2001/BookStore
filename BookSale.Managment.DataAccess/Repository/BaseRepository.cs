@@ -19,7 +19,7 @@ namespace BookSale.Managment.DataAccess.Repository
             this._bookStoreDbContext = bookStoreDbContext;
         }
 
-        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>> expression = null)
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> expression = null)
         {
             if (expression == null)
             {
@@ -56,6 +56,14 @@ namespace BookSale.Managment.DataAccess.Repository
             await _bookStoreDbContext.SaveChangesAsync();
         }
 
+
+        public void Dispose() 
+        {
+            if (_bookStoreDbContext != null)
+            {
+                _bookStoreDbContext.Dispose();
+            }
+        }
 
     }
 }

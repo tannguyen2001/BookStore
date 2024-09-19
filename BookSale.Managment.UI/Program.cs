@@ -10,7 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Cấu hình các dịch vụ
 builder.Services.AddRazorPages();
-builder.Services.RegisterDb(builder.Configuration);
+builder.Services.ConfigureIdentity(builder.Configuration);
+builder.Services.AddDependencyInjection();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddControllersWithViews();
 

@@ -22,7 +22,7 @@ namespace BookSale.Managment.Infrastructure.ConfigurationService
     {
 
 
-        public static void RegisterDb(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureIdentity(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("DefaultConnectionMySql")
                                    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -33,9 +33,19 @@ namespace BookSale.Managment.Infrastructure.ConfigurationService
             //services.AddDbContext<BookStoreDbContext>(options =>
             //    options.UseSqlServer(connectionString));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<BookStoreDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(option =>
+            {
+                option.Cookie.Name = "BookSaleManagmentCookie";
+                option.ExpireTimeSpan = TimeSpan.FromHours(8);
+                option.LoginPath = "/admin/authentication/login";
+
+                //option.AccessDeniedPath = "/";
+            });
+
         }
 
         public static void AddDependencyInjection(this IServiceCollection services)
@@ -43,6 +53,7 @@ namespace BookSale.Managment.Infrastructure.ConfigurationService
             services.AddTransient<PasswordHasher<ApplicationUser>>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IBookService, BookService>();
+            services.AddTransient<IUserService, UserService>();
 
         }
 
